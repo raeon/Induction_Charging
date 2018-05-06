@@ -1,0 +1,14 @@
+{
+    "recipe": [
+        ["induction-coil-small", "induction-coil"]
+    ],
+    "equipment": [
+        ["induction-coil-small", "induction-coil"]
+    ],
+    "item": [
+        ["induction-coil-small", "induction-coil"]
+    ],
+    "technology": [
+        ["induction-small", "induction2"]
+    ]
+}
