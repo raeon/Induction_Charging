@@ -27,7 +27,6 @@ local function getPlayer(event)
 end
 
 local function getOpenedEntity(player)
-    wtf(player.opened_gui_type)
     if player.opened
     and (player.opened_gui_type == defines.gui_type.equipment
         or player.opened_gui_type == defines.gui_type.entity) then
