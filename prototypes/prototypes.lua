@@ -82,8 +82,8 @@ data:extend({
         selectable = false,
         destructible = false,
         collision_box = {
-            {-1, -1},
-            {1, 1},
+            {0, 0},
+            {0, 0},
         },
         collision_mask = {},
         energy_source = {
