@@ -1,4 +1,4 @@
-local config = require('../config/config')
+local config = require('config/config')
 
 -- Fetch all equipment categories
 local equipmentCategories = {}
