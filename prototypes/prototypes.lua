@@ -13,7 +13,6 @@ data:extend({
         icon = "__Induction Charging__/graphics/coil.png",
         icon_size = 32,
         placed_as_equipment_result = "induction-coil",
-        flags = {"goes-to-main-inventory"},
         subgroup = "equipment",
         order = "f[induction-coil]",
         stack_size = 40,
@@ -49,9 +48,9 @@ data:extend({
         },
         energy_source = { -- NOT IMPORTANT: Scroll down to the color prototype generation for the relevant parts!
             type = "electric",
-            usage_priority = "terciary",
+            usage_priority = "tertiary",
         },
-        power = "0kW",
+        power = ".001W",
         categories = {"armor"}, -- overridden in data-final-fixes!
     },
 
@@ -111,7 +110,7 @@ data:extend({
 
 -- Load tiers and colors
 require('styles')
-local config = require('../config/config')
+local config = require('config/config')
 
 -- Add technology for every tier
 local list = {}
@@ -184,7 +183,7 @@ for i = 0, config.colors.count - 1, 1 do
         --     effectivity = 1,
         --     emissions = 0,
         -- },
-        power = "0W",
+        power = ".001W",
         categories = {"armor"}, -- overridden in data-final-fixes!
     }
 
