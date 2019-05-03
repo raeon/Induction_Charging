@@ -131,7 +131,7 @@ function t:UpdateGrid()
     end
 
     -- Try to get player armor inventory
-    local inv = self.entity.get_inventory(defines.inventory.player_armor)
+    local inv = self.entity.get_inventory(defines.inventory.character_armor)
     if inv == nil then
         self.grid:Set(nil)
         self.gui:Hide(true)
