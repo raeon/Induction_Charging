@@ -89,8 +89,8 @@ data:extend({
             type = "electric",
             buffer_capacity = "0J", -- set at runtime
             usage_priority = "primary-input",
-            input_flow_limit = "0W", -- set at runtime
-            output_flow_limit = "0W",
+            input_flow_limit = nil, -- set at runtime
+            output_flow_limit = nil,
             render_no_power_icon = false,
             render_no_network_icon = false,
         },
