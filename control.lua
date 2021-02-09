@@ -411,3 +411,21 @@ end)
 script.on_event(defines.events.on_robot_mined_entity, function(event)
     deleteTracker(event.entity)
 end)
+
+-- An entity is cloned
+script.on_event(defines.events.on_entity_cloned, function(event)
+    -- If the source entity is a shadow entity, destroy the destination.
+    -- We don't want orpahed shadow entities to spawn.
+    if event.source.name == 'induction-shadow' then
+        event.destination.destroy()
+        return
+    end
+
+    -- Check if this entity is tracked. If it is, we want to also track the
+    -- destination entity.
+    local tracker = getTracker(event.source)
+    if not tracker then return end
+
+    -- Create a new tracker for the destination entity.
+    createTracker(event.destination, getGrid(event.destination))
+end)
