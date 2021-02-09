@@ -1,4 +1,20 @@
-local config = require('config/config')
+--[[
+    Induction Charging
+    Copyright (C) 2021  Joris Klein Tijssink
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+]]
 
 -- Fetch all equipment categories
 local equipmentCategories = {}
@@ -7,13 +23,4 @@ for _, category in pairs(data.raw['equipment-category']) do
 end
 
 -- Update default equipment categories
-data.raw['generator-equipment']['induction-coil'].categories = equipmentCategories
-
--- Update equipment categories for every color
-for i = 0, config.colors.count - 1, 1 do
-    local j = tostring(i)
-
-    -- Update equipment categories
-    data.raw['generator-equipment']['induction-coil-' .. j].categories = equipmentCategories
-
-end
+data.raw['battery-equipment']['induction-coil'].categories = equipmentCategories

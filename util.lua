@@ -1,45 +1,20 @@
+--[[
+    Induction Charging
+    Copyright (C) 2021  Joris Klein Tijssink
 
-function classify(class)
-    setmetatable(class, {
-        __call = function(class, ...)
-            -- Create instance table
-            local inst = {}
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-            -- Set metatable *before* constructor so they can invoke
-            -- other functions during construction
-            classifyInstance(inst, class)
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
 
-            -- Invoke constructor
-            class.New(inst, ...)
-
-            return inst
-        end,
-        __newindex = function(index)
-            error('Cannot modify class: ' .. index)
-        end,
-        __metatable = true,
-    })
-    return class
-end
-
-function classifyInstance(inst, class)
-    setmetatable(inst, {
-        __index = class,
-        -- Newindex not implemented because we use nil as a correct value
-        -- __newindex = function(tbl, key)
-        --     error('Cannot change instance at runtime: ' .. key)
-        -- end,
-        __metatable = true,
-    })
-end
-
-function makeImmutable(tbl)
-    setmetatable(tbl, {
-        __index = tbl,
-        __newindex = true,
-        __metatable = true,
-    })
-end
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+]]
 
 function math.round(num)
     return num >= 0 and math.floor(num + 0.5) or math.ceil(num - 0.5)
@@ -95,116 +70,12 @@ function table.with(tbl, k, v)
     return t
 end
 
-function table.without(tbl, k, v)
-    local t = table.copy(tbl)
-    if k then
-        t[k] = nil
-    else
-        for a, b in pairs(t) do
-            if b == v then
-                t[a] = nil
-                break
-            end
-        end
-    end
-    return t
-end
-
 function table.count(tbl)
     local i = 0
     for k,v in pairs(tbl) do
         i = i + 1
     end
     return i
-end
-
-function table.offset(tbl, n)
-    local meta = {
-        __index = function(t, key)
-            if type(key) == 'number' then key = key + n end
-            --write('__index: ' .. key-n .. ' => ' .. key)
-            return tbl[key]
-        end,
-        __newindex = function(t, key)
-            if type(key) == 'number' then key = key + n end
-            --write('__newindex: ' .. key-n .. ' => ' .. key)
-            tbl[key] = value
-        end,
-        __metatable = false
-    }
-    return setmetatable({}, meta)
-end
-
-function table.fill(target, origin)
-    if not target then target = {} end
-    for k,v in pairs(origin) do
-        if target[k] == nil then
-            target[k] = v
-        end
-    end
-    return target
-end
-
-local function getKeys(tbl)
-    local keys, count = {}, 0
-    for k in pairs(tbl) do
-        table.insert(keys, k)
-        count = count + 1
-    end
-    table.sort(keys)
-    return keys, count
-end
-
-function spairs(tbl)
-    local keys, count = getKeys(tbl)
-    local index = 1
-    return function()
-        if index > count then
-            return
-        end
-
-        local k = keys[index]
-        local v = tbl[k]
-        index = index + 1
-        return k, v
-    end
-end
-
-function ctable(name, ...)
-    local args = {...}
-    if #args == 1 and type(args[1]) == 'table' then
-        args = args[1]
-    end
-
-    local meta = {
-        __index = function(tbl, key)
-            if type(key) == 'number' then key = key + 1 end
-            --write(name, '__index: ' .. key-1 .. ' => ' .. key)
-            return args[key] -- +1 because arrays start at 1 in Lua
-        end,
-        __newindex = function(tbl, key, value)
-            if type(key) == 'number' then key = key + 1 end
-            --write(name, '__newindex: ' .. key-1 .. ' => ' .. key)
-            args[key] = value
-        end
-    }
-    return setmetatable({}, meta)
-end
-
-function rerange(num, scope, target)
-    -- Ensure num conforms to scope
-    num = math.max(num, scope[1]) -- lower bound
-    num = math.min(num, scope[2]) -- higher bound
-
-    -- scope range => [0.0, 1.0]
-    num = num - scope[1]
-    num = num / (scope[2] - scope[1])
-
-    -- [0.0, 1.0] => target range
-    num = num * (target[2] - target[1])
-    num = num + target[1]
-
-    return num
 end
 
 function stringify(obj, stack)
@@ -272,12 +143,7 @@ function stringify(obj, stack)
 
 end
 
-function distance(x, y)
-    return math.sqrt(math.pow(x, 2) + math.pow(y, 2))
-end
-
 function prettyTime(seconds)
-
     if seconds < 0 then
         return 'Never'
     end
@@ -348,7 +214,6 @@ function prettyNumber(num, scales, decimals)
 
     local decimalMult = math.pow(10, decimals)
     local number = math.round(num / highest.scale * decimalMult) / decimalMult
-    local decs = tostring(number % 1)
 
     local result = tostring(number)
     local pointIndex = string.find(result, '%.') or -1
@@ -399,39 +264,6 @@ function lazyInit(initFunc)
             cur[key] = val
         end
     })
-end
-
-local function map(table, maxN, curN)
-    return setmetatable(table, {
-        __index = function(tbl, key)
-            if not rawget(tbl, key) and curN ~= maxN then
-                -- If it doesn't exist yet, new table
-                rawset(tbl, key, mapN(maxN, curN + 1))
-            end
-            return rawget(tbl, key)
-        end,
-    })
-end
-
-function mapN(maxN, curN)
-    maxN = maxN or -1
-    curN = curN or 1
-    return map({}, maxN, curN)
-end
-
-function remapN(tbl, maxN, curN)
-    maxN = maxN or -1
-    curN = curN or 1
-
-    -- Remap every child table
-    if curN ~= maxN then
-        for k, v in pairs(tbl) do
-            remapN(v, maxN, curN + 1)
-        end
-    end
-
-    -- Remap current table
-    return map(tbl, maxN, curN)
 end
 
 function string.startsWith(str, sub)

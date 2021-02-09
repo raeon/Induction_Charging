@@ -1,47 +1,34 @@
+--[[
+    Induction Charging
+    Copyright (C) 2021  Joris Klein Tijssink
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+]]
+
 data:extend({
     {
-        type = "int-setting",
-        name = "induction-charging-tickrate",
-        setting_type = "runtime-global",
-        default_value = 15,
-        maximum_value = 300,
-        minimum_value = 1,
-        order = "induction-charging-aa[tickrate]",
+        type = 'int-setting',
+        name = 'induction-charging-update-rate',
+        setting_type = 'runtime-global',
+        default_value = 60,
+        order = 'a'
     },
     {
-        type = "int-setting",
-        name = "induction-charging-gui-tickrate",
-        setting_type = "runtime-global",
-        default_value = 4,
-        maximum_value = 100,
-        minimum_value = 1,
-        order = "induction-charging-bb[gui-tickrate]",
-    },
-    {
-        type = "double-setting",
-        name = "induction-charging-score-base",
-        setting_type = "runtime-global",
-        default_value = 0.50,
-        maximum_value = 1,
-        minimum_value = 0,
-        order = "induction-charging-cc[score-base]",
-    },
-    {
-        type = "double-setting",
-        name = "induction-charging-score-neighbour",
-        setting_type = "runtime-global",
-        default_value = 0.05,
-        maximum_value = 1,
-        minimum_value = 0,
-        order = "induction-charging-dd[score-neighbour]",
-    },
-    {
-        type = "double-setting",
-        name = "induction-charging-score-neighbour-without-whitespace",
-        setting_type = "runtime-global",
-        default_value = 0.12,
-        maximum_value = 1,
-        minimum_value = 0,
-        order = "induction-charging-ee[score-neighbour-without-whitespace]",
-    },
+        type = 'int-setting',
+        name = 'induction-charging-shadow-rate',
+        setting_type = 'runtime-global',
+        default_value = 30,
+        order = 'b',
+    }
 })
