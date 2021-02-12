@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------------------------------
+Version: 2.0.2
+Date: 2021-02-11
+  Bugfixes:
+    - Fixed incompatability with VehicleWagon2 by handling the script_raised_built and script_raised_destroy events.
+---------------------------------------------------------------------------------------------------
+Version: 2.0.1
+Date: 2021-02-10
+  Bugfixes:
+    - Fixed support for on_entity_cloned (or so I hope).
+---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 2021-02-10
+  Major Features:
+    - Release of v2 of Induction Charging, rewritten from scratch for Factorio 1.1.

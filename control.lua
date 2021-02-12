@@ -199,6 +199,10 @@ local function requestEnergy(tracker, amount)
 end
 
 local function updateTracker(tracker)
+    if not tracker.entity.valid then
+        deleteTracker(tracker.entity)
+        return
+    end
     local grid = tracker.grid
 
     -- Grab the energy from the shadow.
@@ -428,4 +432,18 @@ script.on_event(defines.events.on_entity_cloned, function(event)
 
     -- Create a new tracker for the destination entity.
     createTracker(event.destination, getGrid(event.destination))
+end)
+
+-- A mod destroys an entity
+script.on_event(defines.events.script_raised_destroy, function(event)
+    deleteTracker(event.entity)
+end)
+
+-- A mod creates an entity
+script.on_event(defines.events.script_raised_built, function(event)
+    local entity = event.entity
+    local grid = getGrid(entity)
+    if isGridRelevant(grid) then
+        createTracker(entity, grid)
+    end
 end)
