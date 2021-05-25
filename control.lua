@@ -41,7 +41,7 @@ local function debug(...)
 end
 
 local function getID(entity)
-    return entity.is_player() and (-entity.index - 1) or entity.unit_number
+    return entity.is_player() and entity.index and (-entity.index - 1) or entity.unit_number
 end
 
 local function getPlayer(event)
